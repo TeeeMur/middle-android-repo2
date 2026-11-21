@@ -16,6 +16,7 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import ru.yandex.praktikumchatapp.data.ChatApi
 import ru.yandex.praktikumchatapp.data.ChatRepository
+import ru.yandex.praktikumchatapp.presentation.Message
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ChatRepositoryTest {
@@ -45,7 +46,9 @@ class ChatRepositoryTest {
             )
 
         chatRepository.getReplyMessage().test{
-            assert(awaitItem().isNotEmpty())
+            val item = awaitItem()
+            assert(item is Message.OtherMessage)
+            assert((item as? Message.OtherMessage)?.text?.isNotEmpty() == true)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -67,7 +70,9 @@ class ChatRepositoryTest {
             )
 
         chatRepository.getReplyMessage().test {
-            assert(awaitItem() == replyText)
+            val item = awaitItem()
+            assert(item is Message.OtherMessage)
+            assert((item as? Message.OtherMessage)?.text == replyText)
             cancelAndIgnoreRemainingEvents()
         }
     }

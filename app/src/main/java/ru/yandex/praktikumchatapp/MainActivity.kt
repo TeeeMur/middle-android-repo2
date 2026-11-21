@@ -84,9 +84,11 @@ fun ChatScreen(
     // сделал так, чтобы при случайных рекомпозициях requestFocus
     // не срабатывал заново
     LaunchedEffect(Unit) {
-        snapshotFlow { chatState }.first {
-            if (it.shouldShowKeyboard) { focusRequester.requestFocus() }
-            true
+        snapshotFlow { chatState.shouldShowKeyboard }.first {
+            if (it) {
+                focusRequester.requestFocus()
+                true
+            } else false
         }
     }
     Column(modifier = modifier.fillMaxSize()) {

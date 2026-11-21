@@ -42,7 +42,7 @@ class ChatViewModel(
             while (isWithReplies) {
                 repository.getReplyMessage().collectIndexed { idx, response ->
                     if (idx == 0) _shouldShowKeyboard.value = true
-                    _messagesFlow.update { it + Message.MyMessage(response) }
+                    _messagesFlow.update { it + response }
                 }
             }
         }
